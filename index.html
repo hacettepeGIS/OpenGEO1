@@ -1,0 +1,65 @@
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <div id="mapdiv"></div>
+        <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+
+
+          <script>
+
+            $.getJSON('/api/data', function (data) {
+                map = new OpenLayers.Map("mapdiv");
+                map.addLayer(new OpenLayers.Layer.OSM());
+                var popup;
+                // Data dizisini haritaya ekleme işlemi
+                for (var point = 0; point < data.length; point++) {
+                    var lon = data[point].longitude;
+                    var lat = data[point].latitude;
+                    var path = data[point].path;
+                    var id = data[point].id;
+
+                    var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                        map.getProjectionObject() // to Spherical Mercator Projection
+                    )
+                    var zoom = 15;
+
+                    var markers = new OpenLayers.Layer.Markers("Markers");
+                    map.addLayer(markers)
+
+                    var marker = new OpenLayers.Marker(lonLat);
+                    marker.id = id;
+                    marker.events.register("click", marker, function() {
+                            if (popup) {
+                                map.removePopup(popup);
+                            }
+                            popup = new OpenLayers.Popup("popup",
+                            lonLat,
+                                new OpenLayers.Size(250, 400),
+                                `<div class="card">
+                                    <div class="card-body bg-light">
+                                        <h6 class="card-title" style="margin-top:0">Konum Bilgisi</h6>
+                                        <p><small><b class="text-danger">Enlem: </b>${lat}</small></p>
+                                        <p><small><b class="text-danger">Boylam: </b>${lon}</small></p>
+                                    </div>
+                                    <img class="card-img-bottom w3-grayscale-min" src="https://upload.wikimedia.org/wikipedia/commons/f/f6/Bhutan_pine_tree.JPG" alt="Card image" style="width:100%;margin-bottom:0">
+                                    </div>`,
+                                true);
+                            map.addPopup(popup);
+                    });
+
+                    markers.addMarker(marker)
+                    map.setCenter(lonLat, zoom)
+                } 
+            });
+        </script>
+    </body>
+</html>
