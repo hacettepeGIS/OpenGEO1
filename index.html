@@ -15,11 +15,11 @@
 
 
           <script>
-
+            var popup;
             $.getJSON('/api/data', function (data) {
                 map = new OpenLayers.Map("mapdiv");
                 map.addLayer(new OpenLayers.Layer.OSM());
-                var popup;
+                
                 // Data dizisini haritaya ekleme işlemi
                 for (var point = 0; point < data.length; point++) {
                     var lon = data[point].longitude;
@@ -37,7 +37,12 @@
 
                     var marker = new OpenLayers.Marker(lonLat);
                     marker.id = id;
-                    marker.events.register("click", marker, function() {
+
+                    // Eğer kullanıcı tarafından fotograf çelimişse
+                    // Markerin onclick eventine çekilen fotoyu popup ile gösterir
+                    if(path)
+                    {
+                        marker.events.register("click", marker, function() {
                             if (popup) {
                                 map.removePopup(popup);
                             }
@@ -50,12 +55,16 @@
                                         <p><small><b class="text-danger">Enlem: </b>${lat}</small></p>
                                         <p><small><b class="text-danger">Boylam: </b>${lon}</small></p>
                                     </div>
-                                    <img class="card-img-bottom w3-grayscale-min" src="https://upload.wikimedia.org/wikipedia/commons/f/f6/Bhutan_pine_tree.JPG" alt="Card image" style="width:100%;margin-bottom:0">
+                                    <img class="card-img-bottom w3-grayscale-min" 
+                                            src="http://34.76.241.195:8000/Camera/${path}" 
+                                            style="width:100%;margin-bottom:0" 
+                                            onerror="this.onerror=null; this.src='https://cdn.clipart.email/d8e2877a1c5b274651b11cf5af730b91_christmas-tree-templates-and-stencils-free-printable-patterns_243-300.png'">
                                     </div>`,
                                 true);
                             map.addPopup(popup);
-                    });
-
+                        });
+                    }
+                   
                     markers.addMarker(marker)
                     map.setCenter(lonLat, zoom)
                 } 
