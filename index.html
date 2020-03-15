@@ -12,8 +12,6 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-
-
           <script>
             var popup;
             $.getJSON('/api/data', function (data) {
@@ -37,34 +35,51 @@
 
                     var marker = new OpenLayers.Marker(lonLat);
                     marker.id = id;
+                    marker.path = path;
 
                     // Eğer kullanıcı tarafından fotograf çelimişse
                     // Markerin onclick eventine çekilen fotoyu popup ile gösterir
-                    if(path)
-                    {
-                        marker.events.register("click", marker, function() {
-                            if (popup) {
-                                map.removePopup(popup);
-                            }
+                    marker.events.register("click", marker, function() {
+                        if (popup) {
+                            map.removePopup(popup);
+                        }
+                        if(this.path)
+                        {
                             popup = new OpenLayers.Popup("popup",
-                            lonLat,
-                                new OpenLayers.Size(250, 400),
-                                `<div class="card">
-                                    <div class="card-body bg-light">
-                                        <h6 class="card-title" style="margin-top:0">Konum Bilgisi</h6>
-                                        <p><small><b class="text-danger">Enlem: </b>${lat}</small></p>
-                                        <p><small><b class="text-danger">Boylam: </b>${lon}</small></p>
-                                    </div>
-                                    <img class="card-img-bottom w3-grayscale-min" 
-                                            src="http//34.76.241.195:8000/${path}" 
-                                            style="width:100%;margin-bottom:0" 
-                                            onerror="this.onerror=null; this.src='https://cdn.clipart.email/d8e2877a1c5b274651b11cf5af730b91_christmas-tree-templates-and-stencils-free-printable-patterns_243-300.png'">
-                                    </div>`,
-                                true);
+                                            new OpenLayers.LonLat(this.lonlat.lon,this.lonlat.lat),
+                                            new OpenLayers.Size(230, 350),
+                                            `<style>
+                                                #container {
+                                                    height: 200px;
+                                                    width: 100%;
+                                                }
+                                                .image {
+                                                    width: 200px;
+                                                    height: 100%;
+                                                    -webkit-transform: rotate(90deg);
+                                                    display: block;
+                                                    margin-left: auto;
+                                                    margin-right: auto
+                                                }
+                                            </style>                         
+                                            <div class="card">
+                                                <div class="card-body bg-light">
+                                                    <h6 class="card-title" style="margin-top:0">Konum Bilgisi</h6>
+                                                    <p><small><b class="text-danger">Enlem: </b>${this.lonlat.lat}</small></p>
+                                                    <p><small><b class="text-danger">Boylam: </b>${this.lonlat.lon}</small></p>
+                                                   
+                                                </div>
+                                                <div id="container">
+                                                    <a href="https://34.76.241.195:10000/${this.path}" target="_blank">
+                                                        <img class="image" src="https://34.76.241.195:10000/${this.path}" height="100%" width="100%"/>
+                                                    </a>
+                                                </div>`,
+                                            true);
+                        
                             map.addPopup(popup);
-                        });
-                    }
-                    
+                        } 
+                    });
+
                     markers.addMarker(marker)
                     map.setCenter(lonLat, zoom)
                 } 

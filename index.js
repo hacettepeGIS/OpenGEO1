@@ -3,6 +3,7 @@ var fs = require('fs');
 var DATABASE = require('./database.js');
 var app = express();
 
+
 app.get('/', function (req, res, next) {
     res.writeHead(200, { 'Content-Type': 'text/html' });
     var myReadStream = fs.createReadStream(__dirname + '/index.html',
