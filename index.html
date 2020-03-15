@@ -24,7 +24,7 @@
                 for (var point = 0; point < data.length; point++) {
                     var lon = data[point].longitude;
                     var lat = data[point].latitude;
-                    var path = data[point].path;
+                    var path = data[point].photo;
                     var id = data[point].id;
 
                     var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
@@ -56,7 +56,7 @@
                                         <p><small><b class="text-danger">Boylam: </b>${lon}</small></p>
                                     </div>
                                     <img class="card-img-bottom w3-grayscale-min" 
-                                            src="http://34.76.241.195:8000/Camera/${path}" 
+                                            src="http//34.76.241.195:8000/${path}" 
                                             style="width:100%;margin-bottom:0" 
                                             onerror="this.onerror=null; this.src='https://cdn.clipart.email/d8e2877a1c5b274651b11cf5af730b91_christmas-tree-templates-and-stencils-free-printable-patterns_243-300.png'">
                                     </div>`,
@@ -64,7 +64,7 @@
                             map.addPopup(popup);
                         });
                     }
-                   
+                    
                     markers.addMarker(marker)
                     map.setCenter(lonLat, zoom)
                 } 
