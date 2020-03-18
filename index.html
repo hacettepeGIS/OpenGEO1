@@ -47,22 +47,34 @@
                         {
                             popup = new OpenLayers.Popup("popup",
                                             new OpenLayers.LonLat(this.lonlat.lon,this.lonlat.lat),
-                                            new OpenLayers.Size(230, 350),
+                                            new OpenLayers.Size(180, 380),
                                             `<style>
                                                 #container {
-                                                    height: 200px;
+                                                    height: 244px;
                                                     width: 100%;
                                                 }
-                                                .image {
-                                                    width: 200px;
-                                                    height: 100%;
-                                                    -webkit-transform: rotate(90deg);
-                                                    display: block;
-                                                    margin-left: auto;
-                                                    margin-right: auto
-                                                }
                                                 .olPopupContent{
-                                                    width: 279px;
+                                                    overflow: hidden;
+                                                    width:100% !important;
+                                                }
+                                                .card-body{
+                                                    height:130px;
+                                                }
+
+
+                                                :root {
+                                                    --width: 200px;
+                                                    --height: 244px;
+                                                }
+                                                div.top {
+                                                    position: fixed;
+                                                    width: var(--width);
+                                                    height: var(--height);
+                                                }
+                                                .image {
+                                                    transform: rotate(90deg) translate(22px, 22px);
+                                                    width: var(--height);
+                                                    height: var(--width);
                                                 }
                                             </style>                         
                                             <div class="card">
@@ -73,14 +85,14 @@
                                                 </div>
                                                 <div id="container">
                                                     <a href="https://ilyascokan.online/${this.path}" target="_blank">
-                                                        <img class="image" src="https://ilyascokan.online/${this.path}" height="100%" width="100%"/>
+                                                        <div class="top">
+                                                            <img class="image" src="https://ilyascokan.online/${this.path}">
+                                                        </div>
                                                     </a>
-                                                </div>`,
+                                                </div>
+                                            </div>`,
                                             true);
-                        
                             map.addPopup(popup);
-
-                            $(".olPopupContent").width("268px").attr("overflow","hidden");
                         } 
                     });
 
