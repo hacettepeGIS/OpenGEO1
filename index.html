@@ -34,8 +34,9 @@
                     map.addLayer(markers)
 
                     var marker = new OpenLayers.Marker(lonLat);
-                    marker.id = id;
                     marker.path = path;
+                    marker.lat = lat;
+                    marker.lon = lon;
 
                     // Eğer kullanıcı tarafından fotograf çelimişse
                     // Markerin onclick eventine çekilen fotoyu popup ile gösterir
@@ -47,7 +48,7 @@
                         {
                             popup = new OpenLayers.Popup("popup",
                                             new OpenLayers.LonLat(this.lonlat.lon,this.lonlat.lat),
-                                            new OpenLayers.Size(180, 380),
+                                            new OpenLayers.Size(180, 365),
                                             `<style>
                                                 #container {
                                                     height: 244px;
@@ -58,9 +59,9 @@
                                                     width:100% !important;
                                                 }
                                                 .card-body{
-                                                    height:130px;
+                                                    height:120px;
+                                                    padding: 1rem !important;
                                                 }
-
 
                                                 :root {
                                                     --width: 200px;
@@ -80,8 +81,8 @@
                                             <div class="card">
                                                 <div class="card-body bg-light">
                                                     <h6 class="card-title" style="margin-top:0">Konum Bilgisi</h6>
-                                                    <p><small><b class="text-danger">Enlem: </b>${this.lonlat.lat}</small></p>
-                                                    <p><small><b class="text-danger">Boylam: </b>${this.lonlat.lon}</small></p>
+                                                    <p><small><b class="text-danger">Enlem: </b>${this.lat}</small></p>
+                                                    <p><small><b class="text-danger">Boylam: </b>${this.lon}</small></p>
                                                 </div>
                                                 <div id="container">
                                                     <a href="https://ilyascokan.online/${this.path}" target="_blank">
